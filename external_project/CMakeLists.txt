@@ -2,24 +2,28 @@ include(ExternalProject)
 #ExternalProject_Add(test-git
 #        GIT_REPOSITORY    git@github.com:lilelr/test-git.git
 #        )
-include(ExternalProject)
+set(GFLAG_URL       https://github.com/gflags/gflags/archive/master.zip)
 
+set(GFLAG_ROOT ${CMAKE_BINARY_DIR}/thirdparty/gflag)
+set(GFLAG_LIB_DIR ${GFLAG_ROOT}/lib)
+set(GFLAG_INCLUDE_DIR ${GFLAG_ROOT}/include)
 
-#
-#if(UNIX)
-#    include(ExternalProject)
-#
-#    get_filename_component(glog_absolute_install_dir ${CMAKE_INSTALL_PREFIX} ABSOLUTE)
-#
-#    ExternalProject_Add(glog
-#            SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
-#            CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/configure --prefix=${glog_absolute_install_dir}
-#            CMAKE_GENERATOR 'Unix Makefiles'
-#            BUILD_COMMAND ${MAKE}
-#            INSTALL_DIR ${glog_absolute_install_dir}
-#            INSTALL_COMMAND "${MAKE}")
-#endif()
-################# hidapi
+#set(glag_configure ${GFLAG_ROOT}/src/gflag/configure --prefix=${GFLAG_ROOT})
+set(glag_configure cd ${GFLAG_ROOT}/src/gflag && cmake -D CMAKE_INSTALL_PREFIX=${GFLAG_ROOT} .)
+
+set(glag_make cd ${GFLAG_ROOT}/src/gflag && make)
+set(glag_install cd ${GFLAG_ROOT}/src/gflag && make install)
+
+ExternalProject_Add(gflag
+        PREFIX ${GFLAG_ROOT}
+        UPDATE_COMMAND ""
+        PATCH_COMMAND ""
+        CONFIGURE_COMMAND ${glag_configure}
+        BUILD_COMMAND ${glag_make}
+        INSTALL_COMMAND ${glag_install}
+        URL ${GFLAG_URL}
+        DOWNLOAD_NAME gflags-master.zip)
+
 set(GLOG_URL       https://github.com/google/glog/archive/v0.3.5.zip)
 
 set(GLOG_ROOT ${CMAKE_BINARY_DIR}/thirdparty/glog)
@@ -27,6 +31,12 @@ set(GLOG_LIB_DIR ${GLOG_ROOT}/lib)
 set(GLOG_INCLUDE_DIR ${GLOG_ROOT}/include)
 
 
+
+add_library(libflag STATIC IMPORTED)
+set_target_properties(libflag PROPERTIES IMPORTED_LOCATION ${GFLAG_LIB_DIR}/libgflags.a)
+add_dependencies(libflag gflag)
+
+#########
 ExternalProject_Add(glog
         PREFIX ${GLOG_ROOT}
         UPDATE_COMMAND ""
@@ -36,27 +46,10 @@ ExternalProject_Add(glog
         URL ${GLOG_URL}
         DOWNLOAD_NAME glog-0.3.5.zip)
 
+include_directories(${GFLAG_INCLUDE_DIR})
+include_directories(${GLOG_INCLUDE_DIR})
 
-#ExternalProject_Add(
-#        glog
-##        UPDATE_COMMAND ""
-##        PATCH_COMMAND ""
-###        CONFIGURE_COMMAND ${GLOG_ROOT}/src/glog_external/configure --prefix=${GLOG_ROOT}
-##        BUILD_COMMAND make
-#        URL ${GLOG_URL}
-#        DOWNLOAD_NAME glog-0.3.5.zip)
-
-#message(${glog_external})
-
-include_directories(BEFORE ${GLOG_INCLUDE_DIR})
 link_directories(${GLOG_LIB_DIR})
-add_executable(glog_test glog_test.cpp)
-
-list(APPEND LINKER_LIBS ${GLOG_LIB_DIR})
-message(${LINKER_LIBS})
-link_directories(${GLOG_LIB_DIR})
-
-
 add_library(libglog STATIC IMPORTED)
 set_target_properties(libglog PROPERTIES IMPORTED_LOCATION ${GLOG_LIB_DIR}/libglog.a)
 add_dependencies(libglog glog)
@@ -67,7 +60,7 @@ add_dependencies(libglog glog)
 #find_library(COREFOUNDATION NAMES CoreFoundation)
 
 
-
+add_executable(glog_test glog_test.cpp)
 set(glog_LIBS ${GLOG_LIB_DIR}/libglog.a)
-target_link_libraries(glog_test libglog pthread)
+target_link_libraries(glog_test libflag libglog pthread)
 #target_link_libraries(glog_test glog)
