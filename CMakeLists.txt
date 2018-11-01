@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(cmake_begin)
-
+include(cmake/global.cmake)
 set(CMAKE_CXX_STANDARD 11)
 set(high-level "high-level")
 
@@ -8,4 +8,5 @@ set(high-level "high-level")
 add_subdirectory(external_project)
 
 #message(${low-level})
+message(${low_level_global})
 

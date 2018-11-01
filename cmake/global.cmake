@@ -1,0 +1,1 @@
+set(low_level_global "low-level-global")
