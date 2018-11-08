@@ -4,11 +4,12 @@ message(${PROJECT_BINARY_DIR})
 #message(${PROJECT_ROOT_DIR})
 include(cmake/global.cmake)
 include(cmake/thirdparty.cmake)
+include(cmake/hwloc.cmake)
 set(CMAKE_CXX_STANDARD 11)
 set(high-level "high-level")
 
 #add_subdirectory(protobuf_begin)
-add_subdirectory(external_project)
+add_subdirectory(src)
 
 #message(${low-level})
 message(${low_level_global})

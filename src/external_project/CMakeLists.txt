@@ -15,9 +15,9 @@ set(low-level "low-level")
 
 add_library(libhidapi STATIC IMPORTED)
 set_target_properties(libhidapi PROPERTIES IMPORTED_LOCATION ${GFLAG_LIB_DIR}/libgflags.a)
-add_dependencies(libhidapi gflag )
+add_dependencies(libhidapi gflag)
 
 message("20" ${GFLAG_INCLUDE_DIR})
 include_directories(${GFLAG_INCLUDE_DIR})
-add_executable(gflags_test gflags_test.cpp)
+add_executable(gflags_test gflags_test.cpp ../hwloc_example/hwloc_map.cpp)
 target_link_libraries(gflags_test libhidapi pthread)

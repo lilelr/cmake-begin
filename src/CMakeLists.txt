@@ -1,0 +1,2 @@
+add_subdirectory(external_project)
+add_subdirectory(hwloc_example)
