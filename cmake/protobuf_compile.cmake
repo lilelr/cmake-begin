@@ -42,6 +42,7 @@ function(PROTOC_COMPILE PROTO_PATH PROTO_NAME OUT_PUT_PATH)
     # Compile the .proto file.
     ADD_CUSTOM_COMMAND(
             OUTPUT ${CC} ${H}
+            # ${protobuf_2_6_compiler} 定义在　protobuf_download.cmake 中
             COMMAND ${protobuf_2_6_compiler} ${TO_INCLUDE_DIR} ${PROTO}
             )
     message("ends compile the .proto file ")

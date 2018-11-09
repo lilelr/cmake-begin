@@ -1,22 +1,26 @@
 #
-#include_directories(
-#        ${CMAKE_BINARY_DIR}/src
-#        )
+# 自定义下载的protobuf 依赖库和头文件导入开始
 #　${protobuf_2_6_LIB_DIR} 定义在cmake/protobuf_download.cmake 中
+set(Protobuf_LIBRARY libprotobuf.so)
 link_directories(${protobuf_2_6_LIB_DIR})
+message(8 ${Protobuf_LIBRARY} ) # 8libprotobuf.so
 
-# 定义要生成的共享库　imported 表明在别处定义好，导入
-add_library(lele_protobuf_target SHARED IMPORTED)
+## 定义要生成的共享库　imported 表明在别处定义好，导入
+#add_library(lele_protobuf_target SHARED IMPORTED)
+#
+## ${protobuf_2_6_TARGET} 定义在　cmake/protobuf_download.cmake 中
+#set_target_properties(lele_protobuf_target PROPERTIES IMPORTED_LOCATION ${protobuf_2_6_TARGET})
+#
+## 添加　libprotobuf.so
+#add_dependencies(lele_protobuf_target protobuf)
 
-# ${protobuf_2_6_TARGET} 定义在　cmake/protobuf_download.cmake 中
-set_target_properties(lele_protobuf_target PROPERTIES IMPORTED_LOCATION ${protobuf_2_6_TARGET})
-
-# 添加　libprotobuf.so
-add_dependencies(lele_protobuf_target protobuf)
-
+# 该函数定义在　cmake/porotobuf_compile.cmake 中，　其中libproto_search_result　是将生成.cc 和　.h 包装成静态库，即　libproto_search_result．a
+PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)
 message(39 ${SearchRequest_PROTO})
 message(40 ${SearchRequest_PROTO_CC})
 message(41 ${SearchRequest_PROTO_H})
+# 自定义下载的protobuf 依赖库和头文件导入结束
+
 
 set(hwloc_map_SRC hwloc_map.cpp)
 
@@ -44,9 +48,10 @@ set(Hwloc_LIBRARIES hwloc)
 #Adds -D define flags to the compilation of source files.
 
 
-PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)
 
 add_executable(hwloc_map ${hwloc_map_SRC})
+
+# 在　cmake/porotobuf_compile.cmake 中，　其中libproto_search_result　是将生成.cc 和　.h 包装成静态库，即　libproto_search_result．a
 target_link_libraries(hwloc_map libhwloc ${Protobuf_LIBRARY} libproto_search_result)
 
 ## 以下写法都可以：

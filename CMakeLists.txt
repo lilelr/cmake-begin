@@ -5,14 +5,15 @@ project(cmake_begin)
 message(${PROJECT_BINARY_DIR})
 #message(${PROJECT_ROOT_DIR})
 
-### protobuf lib
+### protobuf lib ．so 和头文件， 如果在系统安装目录下找，则像如下写
 
-set(Protobuf_INCLUDE_DIR /usr/include)
-include_directories(${Protobuf_INCLUDE_DIR})
-link_directories(/usr/lib/)
-set(Protobuf_LIBRARY libprotobuf.so)
+#set(Protobuf_INCLUDE_DIR /usr/include)
+#include_directories(${Protobuf_INCLUDE_DIR})
+#link_directories(/usr/lib/)
 
-###
+#set(Protobuf_LIBRARY libprotobuf.so)
+
+###　protobuf lib ．so 和头文件， 如果在系统安装目录下找，则像如上写
 
 #Load and run CMake code from a file or module.
 include(cmake/global.cmake)
@@ -44,7 +45,7 @@ add_subdirectory(src)
 #message(${low-level})
 message(${low_level_global})
 
-
+# 编译参数添加，如-O3 优化
 ADD_DEFINITIONS(
         -O3 -g -W -Wall
         -Wunused-variable -Wunused-parameter -Wunused-function -Wunused

@@ -13,7 +13,7 @@ set(protobuf_2_6_configure cd ${protobuf_2_6_ROOT}/src/protobuf_2_6 && ./autogen
 
 set(protobuf_2_6_make cd ${protobuf_2_6_ROOT}/src/protobuf_2_6 && make)
 set(protobuf_2_6_install cd ${protobuf_2_6_ROOT}/src/protobuf_2_6 && make install)
-set(protobuf_2_6_compiler ${protobuf_2_6_ROOT}/bin/protoc)
+set(protobuf_2_6_compiler ${protobuf_2_6_ROOT}/bin/protoc) # 定义protobuf 　protoc 编译器路径，方便　protobuf_compile.cmake 中函数　PROTOC_COMPILE使用
 
 set(protobuf_2_6_TARGET ${protobuf_2_6_LIB_DIR}/libprotobuf.so)
 #https://cmake.org/cmake/help/v3.0/module/ExternalProject.html
