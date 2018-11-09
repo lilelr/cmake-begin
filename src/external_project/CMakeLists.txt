@@ -17,7 +17,15 @@ add_library(libhidapi STATIC IMPORTED)
 set_target_properties(libhidapi PROPERTIES IMPORTED_LOCATION ${GFLAG_LIB_DIR}/libgflags.a)
 add_dependencies(libhidapi gflag)
 
+
+find_package(Protobuf REQUIRED)
+if(PROTOBUF_FOUND)
+    message(STATUS "protobuf library found")
+else()
+    message(FATAL_ERROR "protobuf library is needed but cant be found")
+endif()
+
 #message("20" ${GFLAG_INCLUDE_DIR})
 include_directories(${GFLAG_INCLUDE_DIR})
 add_executable(gflags_test gflags_test.cpp)
-target_link_libraries(gflags_test libhidapi pthread libproto_search_result)
+target_link_libraries(gflags_test libhidapi pthread ${PROTOBUF_LIBRARIES} libproto_search_result)

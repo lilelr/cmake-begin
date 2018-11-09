@@ -40,8 +40,8 @@ message(39 ${CMAKE_SOURCE_DIR})
 function(PROTOC_TO_INCLUDE_DIR BASE_NAME BASE_DIR_STRUCTURE)
 
     set(TO_INCLUDE_DIR
-            -I${CMAKE_SOURCE_DIR}
-            --cpp_out=${CMAKE_SOURCE_DIR})
+            --cpp_out=${CMAKE_BINARY_DIR}/src/external_project/
+            --proto_path=${CMAKE_SOURCE_DIR}/src/external_project/)
 
     # Names of variables we will be publicly exporting.
     set(PROTO_VAR ${BASE_NAME}_PROTO)    # e.g., MESOS_PROTO
@@ -50,8 +50,8 @@ function(PROTOC_TO_INCLUDE_DIR BASE_NAME BASE_DIR_STRUCTURE)
 
     # Fully qualified paths for the input .proto files and the output C files.
     set(PROTO ${CMAKE_SOURCE_DIR}/${BASE_DIR_STRUCTURE}.proto)
-    set(CC    ${CMAKE_SOURCE_DIR}/${BASE_DIR_STRUCTURE}.pb.cc)
-    set(H     ${CMAKE_SOURCE_DIR}/${BASE_DIR_STRUCTURE}.pb.h)
+    set(CC    ${CMAKE_BINARY_DIR}/${BASE_DIR_STRUCTURE}.pb.cc)
+    set(H     ${CMAKE_BINARY_DIR}/${BASE_DIR_STRUCTURE}.pb.h)
 
     # Export variables holding the target filenames.
     set(${PROTO_VAR} ${PROTO} PARENT_SCOPE) # e.g., mesos/mesos.proto
@@ -65,9 +65,9 @@ function(PROTOC_TO_INCLUDE_DIR BASE_NAME BASE_DIR_STRUCTURE)
             COMMAND /usr/bin/protoc ${TO_INCLUDE_DIR} ${PROTO}
             )
     message("ends compile the .proto file ")
-    add_library(libproto_search_result ${H}  ${CC})
+    add_library(libproto_search_result ${CC} ${H})
 
 endfunction()
 
 
-PROTOC_TO_INCLUDE_DIR(LELEMASTER         src/protobuf_begin/proto/SearchRequest)
+PROTOC_TO_INCLUDE_DIR(LELEMASTER         src/external_project/SearchRequest)
