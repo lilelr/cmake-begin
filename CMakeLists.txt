@@ -8,6 +8,7 @@ message(${PROJECT_BINARY_DIR})
 include(cmake/global.cmake)
 include(cmake/thirdparty.cmake)
 include(cmake/hwloc.cmake)
+include(cmake/fucntion_macro_usage.cmake)
 
 #Set a CMake, cache or environment variable to a given value.
 #
@@ -47,4 +48,7 @@ add_subdirectory(src)
 
 #message(${low-level})
 message(${low_level_global})
+
+
+
 
