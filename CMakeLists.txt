@@ -9,6 +9,9 @@ include(cmake/global.cmake)
 include(cmake/thirdparty.cmake)
 include(cmake/hwloc.cmake)
 include(cmake/fucntion_macro_usage.cmake)
+include(cmake/protobuf_compile.cmake)
+include(cmake/add_custom_command.cmake)
+
 
 #Set a CMake, cache or environment variable to a given value.
 #
