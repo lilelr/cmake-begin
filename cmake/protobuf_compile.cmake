@@ -1,62 +1,42 @@
 # In this case, this function would:
 #
-#   (1) compile the `include/mesos/mesos.proto`, which would generate the files
-#       `build/include/mesos/mesos.pb.h` and `build/include/mesos/mesos.pb.cc`
-#   (2) export the following variables, based on the `BASE_NAME` parameter
-#       (a) MESOS_PROTO:    ${MESOS_ROOT}/include/mesos/mesos.proto
-#       (b) MESOS_PROTO_CC: ${MESOS_ROOT}/build/include/mesos/mesos.pb.cc
-#       (a) MESOS_PROTO_H:   ${MESOS_ROOT}/build/include/mesos/mesos.pb.h
+#   (1)  given the drectory path where the proto file is, the name of proto file, and the output directory path of the relevant header and cpp, we will use protoc to
+#         to compile it and generate the header and cpp in the directory path. For example,
+#         PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)
+#         PROTO_PATH: ${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto
+#         PROTO_NAME: SearchRequest
+#         OUT_PUT_PATH: ${CMAKE_BINARY_DIR}/src
+#         means that we will compile the ${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto/SearchRequest.proto and generates
+#         SearchRequest.pb.h and SearchRequest.pb.cc under the directory ${CMAKE_BINARY_DIR}/src
 
-#function(PROTOC_TO_INCLUDE_DIR BASE_NAME BASE_DIR_STRUCTURE)
-#
-#    set(TO_INCLUDE_DIR
-#            -I${MESOS_PUBLIC_INCLUDE_DIR}
-#            -I${MESOS_SRC_DIR}
-#            --cpp_out=${MESOS_BIN_INCLUDE_DIR})
-#
-#    # Names of variables we will be publicly exporting.
-#    set(PROTO_VAR ${BASE_NAME}_PROTO)    # e.g., MESOS_PROTO
-#    set(CC_VAR    ${BASE_NAME}_PROTO_CC) # e.g., MESOS_PROTO_CC
-#    set(H_VAR     ${BASE_NAME}_PROTO_H)  # e.g., MESOS_PROTO_H
-#
-#    # Fully qualified paths for the input .proto files and the output C files.
-#    set(PROTO ${MESOS_PUBLIC_INCLUDE_DIR}/${BASE_DIR_STRUCTURE}.proto)
-#    set(CC    ${MESOS_BIN_INCLUDE_DIR}/${BASE_DIR_STRUCTURE}.pb.cc)
-#    set(H     ${MESOS_BIN_INCLUDE_DIR}/${BASE_DIR_STRUCTURE}.pb.h)
-#
-#    # Export variables holding the target filenames.
-#    set(${PROTO_VAR} ${PROTO} PARENT_SCOPE) # e.g., mesos/mesos.proto
-#    set(${CC_VAR}    ${CC}    PARENT_SCOPE) # e.g., mesos/mesos.pb.cc
-#    set(${H_VAR}     ${H}     PARENT_SCOPE) # e.g., mesos/mesos.pb.h
-#
-#    # Compile the .proto file.
-#    ADD_CUSTOM_COMMAND(
-#            OUTPUT ${CC} ${H}
-#            COMMAND ${PROTOC} ${TO_INCLUDE_DIR} ${PROTO}
-#            DEPENDS make_bin_include_dir ${PROTO}
-#            WORKING_DIRECTORY ${MESOS_BIN})
-#endfunction()
-message(39 ${CMAKE_SOURCE_DIR})
-function(PROTOC_TO_INCLUDE_DIR BASE_NAME BASE_DIR_STRUCTURE)
+#   (2) export the following variables, based on the `PROTO_NAME` parameter
+#       (a) SearchRequest_PROTO:    ${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto/SearchRequest
+#       (b) SearchRequest_PROTO_CC:       ${CMAKE_BINARY_DIR}/src/SearchRequest.pb.cc
+#       (a) SearchRequest_PROTO_H:        ${CMAKE_BINARY_DIR}/src/SearchRequest.pb.h
+
+
+message(18 ${CMAKE_SOURCE_DIR})
+function(PROTOC_COMPILE PROTO_PATH PROTO_NAME OUT_PUT_PATH)
 
     set(TO_INCLUDE_DIR
-            --cpp_out=${CMAKE_BINARY_DIR}/src/external_project/
-            --proto_path=${CMAKE_SOURCE_DIR}/src/external_project/)
+            --cpp_out=${OUT_PUT_PATH}
+            --proto_path=${PROTO_PATH})
 
     # Names of variables we will be publicly exporting.
-    set(PROTO_VAR ${BASE_NAME}_PROTO)    # e.g., MESOS_PROTO
-    set(CC_VAR    ${BASE_NAME}_PROTO_CC) # e.g., MESOS_PROTO_CC
-    set(H_VAR     ${BASE_NAME}_PROTO_H)  # e.g., MESOS_PROTO_H
+    set(PROTO_VAR ${PROTO_NAME}_PROTO)    # e.g., SearchRequest_PROTO
+    set(CC_VAR    ${PROTO_NAME}_PROTO_CC) # e.g., SearchRequest_CC
+    set(H_VAR     ${PROTO_NAME}_PROTO_H)  # e.g., SearchRequest_H
+        message(29${PROTO_VAR})
 
     # Fully qualified paths for the input .proto files and the output C files.
-    set(PROTO ${CMAKE_SOURCE_DIR}/${BASE_DIR_STRUCTURE}.proto)
-    set(CC    ${CMAKE_BINARY_DIR}/${BASE_DIR_STRUCTURE}.pb.cc)
-    set(H     ${CMAKE_BINARY_DIR}/${BASE_DIR_STRUCTURE}.pb.h)
+    set(PROTO ${PROTO_PATH}/${PROTO_NAME}.proto)
+    set(CC    ${OUT_PUT_PATH}/${PROTO_NAME}.pb.cc)
+    set(H     ${OUT_PUT_PATH}/${PROTO_NAME}.pb.h)
 
     # Export variables holding the target filenames.
-    set(${PROTO_VAR} ${PROTO} PARENT_SCOPE) # e.g., mesos/mesos.proto
-    set(${CC_VAR}    ${CC}    PARENT_SCOPE) # e.g., mesos/mesos.pb.cc
-    set(${H_VAR}     ${H}     PARENT_SCOPE) # e.g., mesos/mesos.pb.h
+    set(${PROTO_VAR} ${PROTO} PARENT_SCOPE) # e.g., SearchRequest.proto
+    set(${CC_VAR}    ${CC}    PARENT_SCOPE) # e.g., SearchRequest.pb.cc
+    set(${H_VAR}     ${H}     PARENT_SCOPE) # e.g., SearchRequest.pb.h
 
     message("compile the .proto file")
     # Compile the .proto file.
@@ -69,5 +49,6 @@ function(PROTOC_TO_INCLUDE_DIR BASE_NAME BASE_DIR_STRUCTURE)
 
 endfunction()
 
-
-PROTOC_TO_INCLUDE_DIR(LELEMASTER         src/external_project/SearchRequest)
+# example
+include_directories(${CMAKE_BINARY_DIR}/src)
+PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)

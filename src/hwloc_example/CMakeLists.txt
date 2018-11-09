@@ -36,10 +36,33 @@ message(16 ${protobuf_LIB})
 # 如果找到则命名为完整路径　/usr/lib/libprotobuf.so
 
 
+message(39 ${SearchRequest_PROTO})
+message(40 ${SearchRequest_PROTO_CC})
+message(41 ${SearchRequest_PROTO_H})
 
 set(hwloc_map_SRC hwloc_map.cpp)
 
+message(${hwloc_INCLUDE_DIR})
+include_directories(${hwloc_INCLUDE_DIR})
 
+# 生成动态库　shared 表示so, imported 表示从其他地方导入
+add_library(libhwloc SHARED IMPORTED)
+
+#Targets can have properties that affect how they are built.
+#
+#   set_target_properties(target1 target2 ...
+#   PROPERTIES prop1 value1
+#   prop2 value2 ...)
+set_target_properties(libhwloc PROPERTIES IMPORTED_LOCATION ${hwloc_LIB_DIR}/libhwloc.so)
+
+#Make a top-level <target> depend on other top-level targets to ensure that they build before <target> does.
+#A top-level target is one created by ADD_EXECUTABLE, ADD_LIBRARY, or ADD_CUSTOM_TARGET.
+add_dependencies(libhwloc hwloc)
+
+message(3 ${hwloc_LIB_DIR})
+
+link_directories(${hwloc_LIB_DIR})
+set(Hwloc_LIBRARIES hwloc)
 #Adds -D define flags to the compilation of source files.
 
 ADD_DEFINITIONS(
@@ -50,7 +73,7 @@ ADD_DEFINITIONS(
 )
 
 add_executable(hwloc_map ${hwloc_map_SRC})
-target_link_libraries(hwloc_map libhwloc)
+target_link_libraries(hwloc_map libhwloc ${Protobuf_LIBRARY} libproto_search_result)
 
 ## 以下写法都可以：
 #target_link_libraries(myProject comm)       # 连接libhello.so库，默认优先链接动态库
