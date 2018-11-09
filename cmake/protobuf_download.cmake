@@ -13,7 +13,9 @@ set(protobuf_2_6_configure cd ${protobuf_2_6_ROOT}/src/protobuf_2_6 && ./autogen
 
 set(protobuf_2_6_make cd ${protobuf_2_6_ROOT}/src/protobuf_2_6 && make)
 set(protobuf_2_6_install cd ${protobuf_2_6_ROOT}/src/protobuf_2_6 && make install)
-set(protobuf_2_6_compiler ${protobuf_2_6_ROOT}/src/protobuf_2_6/src/protoc)
+set(protobuf_2_6_compiler ${protobuf_2_6_ROOT}/bin/protoc)
+
+set(protobuf_2_6_TARGET ${protobuf_2_6_LIB_DIR}/libprotobuf.so)
 #https://cmake.org/cmake/help/v3.0/module/ExternalProject.html
 ExternalProject_Add(protobuf_2_6
         URL ${protobuf_2_6_URL} # Full path or URL of source

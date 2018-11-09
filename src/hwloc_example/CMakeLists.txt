@@ -2,6 +2,22 @@
 #set(Hwloc_INCLUDE_DIRS /home/lemaker/open-source/hwloc-1.11.11/include)
 
 
+include_directories(
+        ${CMAKE_BINARY_DIR}/src
+        ${rotobuf_2_6_INCLUDE_DIR})
+
+link_directories(${protobuf_2_6_LIB_DIR})
+
+add_library(lele_protobuf_target SHARED IMPORTED)
+
+set_target_properties(lele_protobuf_target PROPERTIES IMPORTED_LOCATION ${protobuf_2_6_TARGET})
+
+
+add_dependencies(lele_protobuf_target protobuf)
+
+#target_link_libraries(lele_protobuf_target pthread)
+# PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)
+
 #FIND_系列指令主要包含一下指令:
 #FIND_FILE(<VAR> name1 path1 path2 ...)
 #VAR 变量代表找到的文件全路径,包含文件名
@@ -71,6 +87,7 @@ ADD_DEFINITIONS(
         -Wno-deprecated -Woverloaded-virtual -Wwrite-strings
         -D__WUR= -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DTIXML_USE_STL
 )
+PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)
 
 add_executable(hwloc_map ${hwloc_map_SRC})
 target_link_libraries(hwloc_map libhwloc ${Protobuf_LIBRARY} libproto_search_result)
@@ -84,3 +101,4 @@ target_link_libraries(hwloc_map libhwloc ${Protobuf_LIBRARY} libproto_search_res
 #target_link_libraries(myProject libcomm.so)　　#这些库名写法都可以。
 #target_link_libraries(myProject comm)
 #target_link_libraries(myProject -lcomm)
+#PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)

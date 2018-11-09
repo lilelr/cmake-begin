@@ -42,7 +42,7 @@ function(PROTOC_COMPILE PROTO_PATH PROTO_NAME OUT_PUT_PATH)
     # Compile the .proto file.
     ADD_CUSTOM_COMMAND(
             OUTPUT ${CC} ${H}
-            COMMAND /usr/bin/protoc ${TO_INCLUDE_DIR} ${PROTO}
+            COMMAND ${protobuf_2_6_compiler} ${TO_INCLUDE_DIR} ${PROTO}
             )
     message("ends compile the .proto file ")
     add_library(libproto_search_result ${CC} ${H})
@@ -51,4 +51,3 @@ endfunction()
 
 # example
 include_directories(${CMAKE_BINARY_DIR}/src)
-PROTOC_COMPILE(${CMAKE_SOURCE_DIR}/src/protobuf_begin/proto SearchRequest ${CMAKE_BINARY_DIR}/src)

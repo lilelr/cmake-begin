@@ -40,6 +40,7 @@ message(28 ${SearchRequest_PROTO})
 
 #add_subdirectory(protobuf_begin)
 add_subdirectory(src)
+#add_subdirectory(protobuf_automatic)
 
 #message(${low-level})
 message(${low_level_global})
