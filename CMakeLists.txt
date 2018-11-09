@@ -68,25 +68,25 @@ ADD_DEFINITIONS(
 #FIND_PROGRAM(<VAR> name1 path1 path2 ...)
 #VAR 变量代表包含这个程序的全路径。
 
-FIND_FILE(protobuf_INC message.h /usr/include/google/protobuf)
-IF(NOT protobuf_INC)
-    message(FATAL_ERROR "could not find message.h needed by protobuf " )
-ELSE(NOT protobuf_INC )
-    message("found message.h, its path is ${protobuf_INC}")
-ENDIF(NOT protobuf_INC)
-
-# 查找库所在目录FIND_LIBRARY
-FIND_LIBRARY(protobuf_LIB protobuf /usr/lib  /usr/local/lib NO_DEFAULT_PATH)
-#cmake会在指定目录中查找，如果所有目录中都没有，值RUNTIME_LIB就会被赋为NO_DEFAULT_PATH
-
-# 后缀名.so 和.a 不要省略
-FIND_PATH(boost_timer_PATH libboost_timer.so /usr/local/lib)
-IF(NOT boost_timer_PATH)
-    message(FATAL_ERROR "could not find boost_timer ")
-
-ELSE(NOT boost_timer_PATH)
-    message("boost_time path is ${boost_timer_PATH}")
-
-ENDIF(NOT boost_timer_PATH)
-message(16 ${protobuf_LIB})
+#FIND_FILE(protobuf_INC message.h /usr/include/google/protobuf)
+#IF(NOT protobuf_INC)
+#    message(FATAL_ERROR "could not find message.h needed by protobuf " )
+#ELSE(NOT protobuf_INC )
+#    message("found message.h, its path is ${protobuf_INC}")
+#ENDIF(NOT protobuf_INC)
+#
+## 查找库所在目录FIND_LIBRARY
+#FIND_LIBRARY(protobuf_LIB protobuf /usr/lib  /usr/local/lib NO_DEFAULT_PATH)
+##cmake会在指定目录中查找，如果所有目录中都没有，值RUNTIME_LIB就会被赋为NO_DEFAULT_PATH
+#
+## 后缀名.so 和.a 不要省略
+#FIND_PATH(boost_timer_PATH libboost_timer.so /usr/local/lib)
+#IF(NOT boost_timer_PATH)
+#    message(FATAL_ERROR "could not find boost_timer ")
+#
+#ELSE(NOT boost_timer_PATH)
+#    message("boost_time path is ${boost_timer_PATH}")
+#
+#ENDIF(NOT boost_timer_PATH)
+#message(16 ${protobuf_LIB})
 # 如果找到则命名为完整路径　/usr/lib/libprotobuf.so
