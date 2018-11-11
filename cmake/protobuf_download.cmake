@@ -1,7 +1,7 @@
 include(ExternalProject)
 
 ### protobuf_2_6
-set(protobuf_2_6_URL       https://github.com/protocolbuffers/protobuf/archive/v2.6.1.zip)
+set(protobuf_2_6_URL       https://github.com/lilelr/lele_protobuf_v2.6/archive/master.zip)
 
 set(protobuf_2_6_ROOT ${CMAKE_BINARY_DIR}/thirdparty/protobuf_2_6)
 set(protobuf_2_6_LIB_DIR ${protobuf_2_6_ROOT}/lib)
