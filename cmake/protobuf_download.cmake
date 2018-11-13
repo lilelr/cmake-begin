@@ -1,7 +1,7 @@
 include(ExternalProject)
 
 ### protobuf_2_6
-set(protobuf_2_6_URL       https://github.com/lilelr/lele_protobuf_v2.6/archive/master.zip)
+set(protobuf_2_6_URL       https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.gz)
 
 set(protobuf_2_6_ROOT ${CMAKE_BINARY_DIR}/thirdparty/protobuf_2_6)
 set(protobuf_2_6_LIB_DIR ${protobuf_2_6_ROOT}/lib)
@@ -19,7 +19,7 @@ set(protobuf_2_6_TARGET ${protobuf_2_6_LIB_DIR}/libprotobuf.so)
 #https://cmake.org/cmake/help/v3.0/module/ExternalProject.html
 ExternalProject_Add(protobuf_2_6
         URL ${protobuf_2_6_URL} # Full path or URL of source
-        DOWNLOAD_NAME v2.6.1.zip # File name to store (if not end of URL)
+        DOWNLOAD_NAME protobuf-2.6.1.tar.gz # File name to store (if not end of URL)
         PREFIX ${protobuf_2_6_ROOT} # Root dir for entire project
         UPDATE_COMMAND ""
         PATCH_COMMAND ""
